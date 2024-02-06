@@ -1,0 +1,22 @@
+{
+  "name": "moviebox_backend_api",
+  "version": "1.0.0",
+  "description": "MovieBox - Rating, Review and Recommendation",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MojoSmit07/MovieBox.git"
+  },
+  "author": "Smit Modi and Nandinee Patel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MojoSmit07/MovieBox/issues"
+  },
+  "homepage": "https://github.com/MojoSmit07/MovieBox#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
