@@ -1,8 +1,21 @@
 const express = require('express');
-const { createUser } = require('../controllers/user');
+const { create } = require('../controllers/user');
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/user-create', createUser);
 
+// router.get("/",(req,res) => {
+//     res.send(<h1> hello I am from you backend server</h1>)
+// })
+
+router.post('/create', create);
 module.exports = router;
+
+
+
+
+
+// router.get
+// sending data to our backend user
+// router.post
+// we will be gating some data from our frontend user
