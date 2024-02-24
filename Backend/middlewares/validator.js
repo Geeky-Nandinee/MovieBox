@@ -20,6 +20,7 @@ exports.validate = (req, res, next) => {
 
     next();
 };
+
 // const { check, validationResult } = require('express-validator')
 
 // exports.userValidtor = [
