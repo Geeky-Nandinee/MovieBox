@@ -146,3 +146,12 @@ exports.forgetPassword = async (req,res) =>{
   });
   res.json ({message: "Link sent to your email!"});
 };
+
+exports.sendResetPasswordTokenStatus = (req,res) => {
+  
+    res.json({ valid: true });
+};
+
+exports.resetPassword = (req,res) => {
+ 
+};
