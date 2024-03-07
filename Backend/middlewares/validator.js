@@ -31,6 +31,7 @@ exports.validatePassword = [
         .withMessage("Password must be 8 to 20 characters long!"),
 ];
 
+
 // const { check, validationResult } = require('express-validator')
 
 // exports.userValidtor = [
