@@ -15,7 +15,7 @@ exports.generateMailTransporter = () =>
         host: "smtp.mailtrap.io",
         port: 2525,
         auth: {
-          user: "f39b17646fe9dd",
-          pass: "30360a198facac"
+            user: process.env.MAIL_TRAP_USER,
+            pass: process.env.MAIL_TRAP_PASS
         }
     });

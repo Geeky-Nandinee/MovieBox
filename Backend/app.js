@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+require('dotenv').config()
 require('./db')
 const userRouter = require("./routes/user");
 
@@ -22,6 +23,7 @@ app.use("/api/user", userRouter);
 app.listen(8000, () => {
   console.log("the port is listening on port 8000");
 });
+
 
 
 
