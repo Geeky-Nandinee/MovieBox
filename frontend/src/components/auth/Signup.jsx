@@ -11,8 +11,8 @@ export default function Signup() {
       <Container>
         <form className="bg-secondary rounded p-6 w-72 space-y-6">
           <Title>Sign up</Title>
-          <FormInput label="Name" placeholder="John Doe" name="name" />
-          <FormInput label="Email" placeholder="john@email.com" name="email" />
+          <FormInput label="Name" placeholder="Nandinee" name="name" />
+          <FormInput label="Email" placeholder="Nandinee@email.com" name="email" />
           <FormInput label="Password" placeholder="********" name="password" />
           <Submit value="Sign up" />
 
