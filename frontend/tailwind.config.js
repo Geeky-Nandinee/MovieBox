@@ -8,6 +8,7 @@ module.exports = {
         secondary: "#272727",
         "dark-subtle": "rgba(255, 255, 255, 0.5)",
         "light-subtle": "rgba(39, 39, 39, 0.5)",
+        navy: "rgba(61, 32, 142, 0.91)" // Add the new color definition here
       },
     },
   },
