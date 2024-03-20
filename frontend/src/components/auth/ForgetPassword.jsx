@@ -13,7 +13,7 @@ export default function ForgetPassword() {
       <Container>
         <form className={commonModalClasses + " w-96"}>
           <Title>Please Enter Your Email</Title>
-          <FormInput label="Email" placeholder="Nandinee@email.com" name="email" />
+          <FormInput label="Email" placeholder="john@email.com" name="email" />
           <Submit value="Send Link" />
 
           <div className="flex justify-between">

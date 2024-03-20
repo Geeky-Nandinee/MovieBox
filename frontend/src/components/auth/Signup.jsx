@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createUser } from "../../api/auth";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import CustomLink from "../CustomLink";
@@ -31,18 +33,26 @@ export default function Signup() {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setUserInfo({ ...userInfo, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { ok, error } = validateUserInfo(userInfo);
 
     if (!ok) return console.log(error);
 
-    console.log(userInfo);
+    const response = await createUser(userInfo);
+    if (response.error) return console.log(response.error);
+
+    navigate("/auth/verification", {
+      state: { user: response.user },
+      replace: true,
+    });
   };
 
   const { name, email, password } = userInfo;

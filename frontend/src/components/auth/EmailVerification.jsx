@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import FormContainer from "../form/FormContainer";
@@ -13,6 +14,11 @@ export default function EmailVerification() {
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
 
   const inputRef = useRef();
+
+  const { state } = useLocation();
+  const user = state?.user;
+
+  const navigate = useNavigate();
 
   const focusNextInputField = (index) => {
     setActiveOtpIndex(index + 1);
@@ -45,6 +51,12 @@ export default function EmailVerification() {
   useEffect(() => {
     inputRef.current?.focus();
   }, [activeOtpIndex]);
+
+  useEffect(() => {
+    if (!user) navigate("/not-found");
+  }, [user]);
+
+  // if(!user) return null
 
   return (
     <FormContainer>

@@ -14,7 +14,7 @@ export default function Signin() {
       <Container>
         <form className={commonModalClasses + " w-72"}>
           <Title>Sign in</Title>
-          <FormInput label="Email" placeholder="Nandinee@email.com" name="email" />
+          <FormInput label="Email" placeholder="john@email.com" name="email" />
           <FormInput label="Password" placeholder="********" name="password" />
           <Submit value="Sign in" />
 
