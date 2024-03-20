@@ -77,7 +77,22 @@ exports.verifyEmail = async (req, res) => {
     subject: "Welcome Email",
     html: "<h1>Welcome to our app and thanks for choosing us.</h1>",
   });
+<<<<<<< HEAD
+
+  const jwtToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+  res.json({
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      token: jwtToken,
+      isVerified: user.isVerified,
+    },
+    message: "Your email is verified.",
+  });
+=======
   res.json({ message: "Your email is verified." });
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
 };
 
 exports.resendEmailVerificationToken = async (req, res) => {
@@ -151,7 +166,7 @@ exports.forgetPassword = async (req, res) => {
   });
   await newPasswordResetToken.save();
 
-  const resetPasswordUrl = `http://localhost:3000/reset-password?token=${token}&id=${user._id}`;
+  const resetPasswordUrl = `http://localhost:3000/auth/reset-password?token=${token}&id=${user._id}`;
 
   const transport = generateMailTransporter();
 
@@ -216,9 +231,15 @@ exports.signIn = async (req, res, next) => {
   const matched = await user.comparePassword(password);
   if (!matched) return sendError(res, "Email/Password mismatch!");
 
-  const { _id, name } = user;
+  const { _id, name, isVerified } = user;
 
   const jwtToken = jwt.sign({ userId: _id }, process.env.JWT_SECRET);
 
+<<<<<<< HEAD
+  res.json({
+    user: { id: _id, name, email, token: jwtToken, isVerified },
+  });
+=======
   res.json({ user: { id: _id, name, email, token: jwtToken } });
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
 };
