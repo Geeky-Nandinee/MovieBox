@@ -11,7 +11,7 @@ export default function Signin() {
       <Container>
         <form className="bg-secondary rounded p-6 w-72 space-y-6">
           <Title>Sign in</Title>
-          <FormInput label="Email" placeholder="john@email.com" name="email" />
+          <FormInput label="Email" placeholder="Nandinee@email.com" name="email" />
           <FormInput label="Password" placeholder="********" name="password" />
           <Submit value="Sign in" />
 
