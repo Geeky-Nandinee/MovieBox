@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { verifyUserEmail } from "../../api/auth";
+import { resendEmailVerificationToken, verifyUserEmail } from "../../api/auth";
+import { useAuth, useNotification } from "../../hooks";
+
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import FormContainer from "../form/FormContainer";
@@ -8,7 +10,6 @@ import Submit from "../form/Submit";
 import Title from "../form/Title";
 
 const OTP_LENGTH = 6;
-let currentOTPIndex;
 
 const isValidOTP = (otp) => {
   let valid = false;
@@ -25,7 +26,12 @@ export default function EmailVerification() {
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
 
+  const { isAuth, authInfo } = useAuth();
+  const { isLoggedIn, profile } = authInfo;
+  const isVerified = profile?.isVerified;
+
   const inputRef = useRef();
+  const { updateNotification } = useNotification();
 
   const { state } = useLocation();
   const user = state?.user;
@@ -40,41 +46,54 @@ export default function EmailVerification() {
     let nextIndex;
     const diff = index - 1;
     nextIndex = diff !== 0 ? diff : 0;
+
     setActiveOtpIndex(nextIndex);
   };
 
-  const handleOtpChange = ({ target }) => {
+  const handleOtpChange = ({ target }, index) => {
     const { value } = target;
     const newOtp = [...otp];
-    newOtp[currentOTPIndex] = value.substring(value.length - 1, value.length);
+    newOtp[index] = value.substring(value.length - 1, value.length);
 
-    if (!value) focusPrevInputField(currentOTPIndex);
-    else focusNextInputField(currentOTPIndex);
+    if (!value) focusPrevInputField(index);
+    else focusNextInputField(index);
+
     setOtp([...newOtp]);
   };
 
+  const handleOTPResend = async () => {
+    const { error, message } = await resendEmailVerificationToken(user.id);
+
+    if (error) return updateNotification("error", error);
+
+    updateNotification("success", message);
+  };
+
   const handleKeyDown = ({ key }, index) => {
-    currentOTPIndex = index;
     if (key === "Backspace") {
-      focusPrevInputField(currentOTPIndex);
+      focusPrevInputField(index);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isValidOTP(otp)) {
-      return console.log("invalid OTP");
-    }
+    if (!isValidOTP(otp)) return updateNotification("error", "invalid OTP");
 
     // submit otp
-    const { error, message } = await verifyUserEmail({
+    const {
+      error,
+      message,
+      user: userResponse,
+    } = await verifyUserEmail({
       OTP: otp.join(""),
       userId: user.id,
     });
-    if (error) return console.log(error);
+    if (error) return updateNotification("error", error);
 
-    console.log(message);
+    updateNotification("success", message);
+    localStorage.setItem("auth-token", userResponse.token);
+    isAuth();
   };
 
   useEffect(() => {
@@ -83,9 +102,10 @@ export default function EmailVerification() {
 
   useEffect(() => {
     if (!user) navigate("/not-found");
-  }, [user]);
+    if (isLoggedIn && isVerified) navigate("/");
+  }, [user, isLoggedIn, isVerified]);
 
-  // if(!user) return null
+  // if(!user) return null;
 
   return (
     <FormContainer>
@@ -106,15 +126,24 @@ export default function EmailVerification() {
                   key={index}
                   type="number"
                   value={otp[index] || ""}
-                  onChange={handleOtpChange}
+                  onChange={(e) => handleOtpChange(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
-                  className="w-12 h-12 border-2 dark:border-dark-subtle  border-light-subtle darK:focus:border-white focus:border-primary rounded bg-transparent outline-none text-center dark:text-white text-primary font-semibold text-xl spin-button-none"
+                  className="w-12 h-12 border-2 dark:border-dark-subtle border-light-subtle dark:focus:border-white focus:border-primary rounded bg-transparent outline-none text-center dark:text-white text-primary font-semibold text-xl spin-button-none"
                 />
               );
             })}
           </div>
 
-          <Submit value="Verify Account" />
+          <div>
+            <Submit value="Verify Account" />
+            <button
+              onClick={handleOTPResend}
+              type="button"
+              className="dark:text-white text-blue-500 font-semibold hover:underline mt-2"
+            >
+              I don't have OTP
+            </button>
+          </div>
         </form>
       </Container>
     </FormContainer>
