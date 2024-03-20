@@ -1,5 +1,6 @@
 import React from "react";
 import { BsFillSunFill } from "react-icons/bs";
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 import { useAuth, useTheme } from "../../hooks";
 import Container from "../Container";
@@ -9,20 +10,20 @@ export default function Navbar() {
   const { authInfo, handleLogout } = useAuth();
   const { isLoggedIn } = authInfo;
 
+=======
+import Container from "../Container";
+
+export default function Navbar() {
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
   return (
     <div className="bg-secondary shadow-sm shadow-gray-500">
       <Container className="p-2">
         <div className="flex justify-between items-center">
-          <Link to="/">
-            <img src="./logo.png" alt="" className="h-10" />
-          </Link>
+          <img src="./logo.png" alt="" className="h-10" />
 
           <ul className="flex items-center space-x-4">
             <li>
-              <button
-                onClick={toggleTheme}
-                className="dark:bg-white bg-dark-subtle p-1 rounded"
-              >
+              <button className="bg-dark-subtle p-1 rounded">
                 <BsFillSunFill className="text-secondary" size={24} />
               </button>
             </li>
@@ -33,6 +34,7 @@ export default function Navbar() {
                 placeholder="search..."
               />
             </li>
+<<<<<<< HEAD
             <li>
               {isLoggedIn ? (
                 <button
@@ -50,6 +52,9 @@ export default function Navbar() {
                 </Link>
               )}
             </li>
+=======
+            <li className="text-white font-semibold text-lg">Login</li>
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
           </ul>
         </div>
       </Container>

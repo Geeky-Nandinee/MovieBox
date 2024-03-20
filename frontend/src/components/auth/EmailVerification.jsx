@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+<<<<<<< HEAD
 import { useLocation, useNavigate } from "react-router-dom";
 import { resendEmailVerificationToken, verifyUserEmail } from "../../api/auth";
 import { useAuth, useNotification } from "../../hooks";
 
 import { commonModalClasses } from "../../utils/theme";
+=======
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
 import Container from "../Container";
-import FormContainer from "../form/FormContainer";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
 
@@ -108,12 +110,16 @@ export default function EmailVerification() {
   // if(!user) return null;
 
   return (
-    <FormContainer>
+    <div className="fixed inset-0 bg-primary -z-10 flex justify-center items-center">
       <Container>
+<<<<<<< HEAD
         <form onSubmit={handleSubmit} className={commonModalClasses}>
+=======
+        <form className="bg-secondary rounded p-6 space-y-6">
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
           <div>
             <Title>Please enter the OTP to verify your account</Title>
-            <p className="text-center dark:text-dark-subtle text-light-subtle">
+            <p className="text-center text-dark-subtle">
               OTP has been sent to your email
             </p>
           </div>
@@ -128,7 +134,11 @@ export default function EmailVerification() {
                   value={otp[index] || ""}
                   onChange={(e) => handleOtpChange(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
+<<<<<<< HEAD
                   className="w-12 h-12 border-2 dark:border-dark-subtle border-light-subtle dark:focus:border-white focus:border-primary rounded bg-transparent outline-none text-center dark:text-white text-primary font-semibold text-xl spin-button-none"
+=======
+                  className="w-12 h-12 border-2 border-dark-subtle focus:border-white rounded bg-transparent outline-none text-center text-white font-semibold text-xl spin-button-none"
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
                 />
               );
             })}
@@ -146,6 +156,6 @@ export default function EmailVerification() {
           </div>
         </form>
       </Container>
-    </FormContainer>
+    </div>
   );
 }

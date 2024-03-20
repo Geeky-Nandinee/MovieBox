@@ -1,12 +1,15 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth, useNotification } from "../../hooks";
 import { isValidEmail } from "../../utils/helper";
 import { commonModalClasses } from "../../utils/theme";
 
+=======
+import React from "react";
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
 import Container from "../Container";
 import CustomLink from "../CustomLink";
-import FormContainer from "../form/FormContainer";
 import FormInput from "../form/FormInput";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
@@ -52,9 +55,13 @@ export default function Signin() {
   }, [isLoggedIn]);
 
   return (
-    <FormContainer>
+    <div className="fixed inset-0 bg-primary -z-10 flex justify-center items-center">
       <Container>
+<<<<<<< HEAD
         <form onSubmit={handleSubmit} className={commonModalClasses + " w-72"}>
+=======
+        <form className="bg-secondary rounded p-6 w-72 space-y-6">
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
           <Title>Sign in</Title>
           <FormInput
             value={userInfo.email}
@@ -79,6 +86,6 @@ export default function Signin() {
           </div>
         </form>
       </Container>
-    </FormContainer>
+    </div>
   );
 }

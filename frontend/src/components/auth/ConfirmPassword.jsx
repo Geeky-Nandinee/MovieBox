@@ -1,11 +1,14 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import { ImSpinner3 } from "react-icons/im";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { resetPassword, verifyPasswordResetToken } from "../../api/auth";
 import { useNotification } from "../../hooks";
 import { commonModalClasses } from "../../utils/theme";
+=======
+import React from "react";
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
 import Container from "../Container";
-import FormContainer from "../form/FormContainer";
 import FormInput from "../form/FormInput";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
@@ -101,9 +104,13 @@ export default function ConfirmPassword() {
     );
 
   return (
-    <FormContainer>
+    <div className="fixed inset-0 bg-primary -z-10 flex justify-center items-center">
       <Container>
+<<<<<<< HEAD
         <form onSubmit={handleSubmit} className={commonModalClasses + " w-96"}>
+=======
+        <form className="bg-secondary rounded p-6 w-96 space-y-6">
+>>>>>>> parent of 3d0e0cb (Commited by Smit Modi on 20/03/2024 - Setting up Axios for data transfer between Backend and Frontend)
           <Title>Enter New Password</Title>
           <FormInput
             value={password.one}
@@ -124,6 +131,6 @@ export default function ConfirmPassword() {
           <Submit value="Confirm Password" />
         </form>
       </Container>
-    </FormContainer>
+    </div>
   );
 }
