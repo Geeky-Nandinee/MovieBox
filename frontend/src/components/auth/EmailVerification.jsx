@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { verifyUserEmail } from "../../api/auth";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import FormContainer from "../form/FormContainer";
@@ -8,6 +9,17 @@ import Title from "../form/Title";
 
 const OTP_LENGTH = 6;
 let currentOTPIndex;
+
+const isValidOTP = (otp) => {
+  let valid = false;
+
+  for (let val of otp) {
+    valid = !isNaN(parseInt(val));
+    if (!valid) break;
+  }
+
+  return valid;
+};
 
 export default function EmailVerification() {
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
@@ -48,6 +60,23 @@ export default function EmailVerification() {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!isValidOTP(otp)) {
+      return console.log("invalid OTP");
+    }
+
+    // submit otp
+    const { error, message } = await verifyUserEmail({
+      OTP: otp.join(""),
+      userId: user.id,
+    });
+    if (error) return console.log(error);
+
+    console.log(message);
+  };
+
   useEffect(() => {
     inputRef.current?.focus();
   }, [activeOtpIndex]);
@@ -61,7 +90,7 @@ export default function EmailVerification() {
   return (
     <FormContainer>
       <Container>
-        <form className={commonModalClasses}>
+        <form onSubmit={handleSubmit} className={commonModalClasses}>
           <div>
             <Title>Please enter the OTP to verify your account</Title>
             <p className="text-center dark:text-dark-subtle text-light-subtle">
@@ -85,7 +114,7 @@ export default function EmailVerification() {
             })}
           </div>
 
-          <Submit value="Send Link" />
+          <Submit value="Verify Account" />
         </form>
       </Container>
     </FormContainer>
