@@ -1,3 +1,13 @@
+.spin-button-none::-webkit-outer-spin-button,
+.spin-button-none::-webkit-inner-spin-button {
+  appearance: none;
+}
+
+/*For Firefox*/
+.spin-button-none[type="number"] {
+  -moz-appearance: textfield;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
