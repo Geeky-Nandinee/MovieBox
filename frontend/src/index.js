@@ -1,17 +1,38 @@
-import ReactDOM from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 
 import "./index.css";
-import ThemeProvider from "./context/ThemeProvider";
+import ContextProviders from "./context";
 
 const rootElement = document.getElementById("root");
-const root = ReactDOM.createRoot(rootElement);
 
+const root = ReactDOM.createRoot(rootElement);
 root.render(
   <BrowserRouter>
-    <ThemeProvider>
+    <ContextProviders>
       <App />
-    </ThemeProvider>
+    </ContextProviders>
   </BrowserRouter>
 );
+
+
+
+// import React from "react";
+// import ReactDOM from "react-dom";
+// import App from "./App";
+// import { BrowserRouter } from "react-router-dom";
+
+// import "./index.css";
+// import ContextProviders from "./context";
+
+// ReactDOM.render(
+//   <BrowserRouter>
+//     <ContextProviders>
+//       <App />
+//     </ContextProviders>
+//   </BrowserRouter>,
+//   document.getElementById("root")
+// );
