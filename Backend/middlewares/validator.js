@@ -1,6 +1,6 @@
 const { check, validationResult } = require("express-validator");
-const genres = require("../utils/genres");
 const { isValidObjectId } = require("mongoose");
+const genres = require("../utils/genres");
 
 exports.userValidtor = [
   check("name").trim().not().isEmpty().withMessage("Name is missing!"),
@@ -113,11 +113,11 @@ exports.validateMovie = [
         throw Error("Trailer url is invalid!");
       }
     }),
-  check("poster").custom((_, { req }) => {
-    if (!req.file) throw Error("Poster file is missing!");
+  // check("poster").custom((_, { req }) => {
+  //   if (!req.file) throw Error("Poster file is missing!");
 
-    return true;
-  }),
+  //   return true;
+  // }),
 ];
 
 exports.validate = (req, res, next) => {
