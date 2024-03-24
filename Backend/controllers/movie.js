@@ -62,4 +62,22 @@ exports.createMovie = async (req, res) => {
 
     newMovie.writers = writers;
   }
+
+  // uploading poster
+  const cloudRes = await cloudinary.uploader.upload(file.path, {
+    transformation: {
+      width: 1280,
+      height: 720,
+    },
+    responsive_breakpoints: {
+      create_derived: true,
+      max_width: 640,
+      max_images: 3,
+    },
+  });
+
+  console.log(cloudRes);
+  console.log(cloudRes.responsive_breakpoints[0].breakpoints);
+
+  res.send("ok");
 };
