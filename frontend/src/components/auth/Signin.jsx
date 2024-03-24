@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth, useNotification } from "../../hooks";
 import { isValidEmail } from "../../utils/helper";
 import { commonModalClasses } from "../../utils/theme";
-
 import Container from "../Container";
 import CustomLink from "../CustomLink";
 import FormContainer from "../form/FormContainer";
@@ -46,10 +45,10 @@ export default function Signin() {
     handleLogin(userInfo.email, userInfo.password);
   };
 
-  useEffect(() => {
-    // we want to move our user to somewhere else
-    if (isLoggedIn) navigate("/");
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   // we want to move our user to somewhere else
+  //   if (isLoggedIn) navigate("/");
+  // }, [isLoggedIn]);
 
   return (
     <FormContainer>
