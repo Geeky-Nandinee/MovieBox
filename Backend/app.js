@@ -7,6 +7,8 @@ require("dotenv").config();
 require("./db");
 const userRouter = require("./routes/user");
 const actorRouter = require("./routes/actor");
+const movieRouter = require("./routes/movie");
+
 const { handleNotFound } = require("./utils/helper");
 
 const app = express();
@@ -15,6 +17,9 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use("/api/user", userRouter);
 app.use("/api/actor", actorRouter);
+app.use("/api/movie", movieRouter);
+
+
 app.use("/*", handleNotFound);
 
 app.use(errorHandler);
