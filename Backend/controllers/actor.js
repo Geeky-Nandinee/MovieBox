@@ -94,7 +94,7 @@ exports.searchActor = async (req, res) => {
 };
 
 exports.getLatestActors = async (req, res) => {
-  const result = await Actor.find().sort({ createdAt: -1 }).limit(12);
+  const result = await Actor.find().sort({ createdAt: "-1" }).limit(12);
 
   const actors = result.map((actor) => formatActor(actor));
 
