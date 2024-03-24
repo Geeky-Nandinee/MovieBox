@@ -30,7 +30,6 @@ exports.createMovie = async (req, res) => {
     tags,
     cast,
     writers,
-    poster,
     trailer,
     language,
   } = body;
@@ -64,20 +63,41 @@ exports.createMovie = async (req, res) => {
   }
 
   // uploading poster
-  const cloudRes = await cloudinary.uploader.upload(file.path, {
-    transformation: {
-      width: 1280,
-      height: 720,
-    },
-    responsive_breakpoints: {
-      create_derived: true,
-      max_width: 640,
-      max_images: 3,
+  if (file) {
+    const {
+      secure_url: url,
+      public_id,
+      responsive_breakpoints,
+    } = await cloudinary.uploader.upload(file.path, {
+      transformation: {
+        width: 1280,
+        height: 720,
+      },
+      responsive_breakpoints: {
+        create_derived: true,
+        max_width: 640,
+        max_images: 3,
+      },
+    });
+
+    const finalPoster = { url, public_id, responsive: [] };
+
+    const { breakpoints } = responsive_breakpoints[0];
+    if (breakpoints.length) {
+      for (let imgObj of breakpoints) {
+        const { secure_url } = imgObj;
+        finalPoster.responsive.push(secure_url);
+      }
+    }
+    newMovie.poster = finalPoster;
+  }
+
+  await newMovie.save();
+
+  res.status(201).json({
+    movie: {
+      id: newMovie._id,
+      title,
     },
   });
-
-  console.log(cloudRes);
-  console.log(cloudRes.responsive_breakpoints[0].breakpoints);
-
-  res.send("ok");
 };
