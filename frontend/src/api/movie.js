@@ -121,3 +121,12 @@ export const getTopRatedMovies = async (type) => {
     return catchError(error);
   }
 };
+
+export const getLatestUploads = async () => {
+  try {
+    const { data } = await client("/movie/latest-uploads");
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
