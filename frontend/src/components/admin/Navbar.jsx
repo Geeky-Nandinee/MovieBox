@@ -14,7 +14,9 @@ export default function Navbar() {
         <ul>
           <li className="mb-8">
             <Link to="/">
-              <img src="./logo.png" alt="logo" className="h-14 p-2" />
+            <div className="flex justify-center items-center mb-8">
+              <img src="./logo.png" alt="logo" className="h-25 p-10" />
+            </div>
             </Link>
           </li>
           <li>
