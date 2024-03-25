@@ -19,3 +19,105 @@ export const uploadTrailer = async (formData, onUploadProgress) => {
     return catchError(error);
   }
 };
+
+export const uploadMovie = async (formData) => {
+  const token = getToken();
+  try {
+    const { data } = await client.post("/movie/create", formData, {
+      headers: {
+        authorization: "Bearer " + token,
+        "content-type": "multipart/form-data",
+      },
+    });
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
+
+export const getMovieForUpdate = async (id) => {
+  const token = getToken();
+  try {
+    const { data } = await client("/movie/for-update/" + id, {
+      headers: {
+        authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
+
+export const getMovies = async (pageNo, limit) => {
+  const token = getToken();
+  try {
+    const { data } = await client(
+      `/movie/movies?pageNo=${pageNo}&limit=${limit}`,
+      {
+        headers: {
+          authorization: "Bearer " + token,
+          "content-type": "multipart/form-data",
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
+
+export const updateMovie = async (id, formData) => {
+  const token = getToken();
+  try {
+    const { data } = await client.patch("/movie/update/" + id, formData, {
+      headers: {
+        authorization: "Bearer " + token,
+        "content-type": "multipart/form-data",
+      },
+    });
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
+
+export const deleteMovie = async (id) => {
+  const token = getToken();
+  try {
+    const { data } = await client.delete(`/movie/${id}`, {
+      headers: {
+        authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
+
+export const searchMovieForAdmin = async (title) => {
+  const token = getToken();
+  try {
+    const { data } = await client(`/movie/search?title=${title}`, {
+      headers: {
+        authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
+
+export const getTopRatedMovies = async (type) => {
+  try {
+    let endpoint = "/movie/top-rated";
+    if (type) endpoint = endpoint + "?type=" + type;
+
+    const { data } = await client(endpoint);
+    return data;
+  } catch (error) {
+    return catchError(error);
+  }
+};
