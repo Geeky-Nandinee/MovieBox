@@ -9,14 +9,14 @@ import { useAuth } from "../../hooks";
 export default function Navbar() {
   const { handleLogout } = useAuth();
   return (
-    <nav className="w-48 min-h-screen bg-secondary border-r border-gray-300">
+    <nav className="w-48 min-h-screen bg-secondary border-r border-gray-300" style={{ backgroundColor: 'rgba(61, 30, 142, 0.91)' }}>
       <div className="flex flex-col justify-between pl-5 h-screen sticky top-0">
         <ul>
           <li className="mb-8">
             <Link to="/">
-            <div className="flex justify-center items-center mb-8">
-              <img src="./logo.png" alt="logo" className="h-25 p-10" />
-            </div>
+              <div className="flex justify-center items-center mb-8">
+                <img src="./logo.png" alt="logo" className="h-30 p-5" />
+              </div>
             </Link>
           </li>
           <li>
