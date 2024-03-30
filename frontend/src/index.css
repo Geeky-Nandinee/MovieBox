@@ -119,6 +119,64 @@
   }
 }
 
+/* styles.css or globals.css */
+.gradient-bg-dark {
+  background: linear-gradient(to bottom, #000000 50%, #460363 100%);
+}
+
+.gradient-bg-light {
+  background: linear-gradient(to bottom, #000000 50%, #460363 100%);
+}
+
+
+@keyframes animate-movie {
+  0% { transform: scale(1); color: #fff; }
+  50% { transform: scale(1.1); color: #e3b21a; }
+  100% { transform: scale(1); color: #fff; }
+}
+
+@keyframes animate-box {
+  0% { color: #fff; }
+  50% { color: #e3b21a; }
+  100% { color: #fff; }
+}
+
+.animate-movie {
+  animation: animate-movie 0.5s ease-in-out;
+}
+
+.animate-box {
+  animation: animate-box 0.5s ease-in-out;
+}
+
+.text-white:hover .animate-movie {
+  animation: animate-movie-hover 0.5s ease-in-out;
+}
+
+@keyframes animate-movie-hover {
+  0% { transform: scale(1); color: #fff; }
+  50% { transform: scale(1.1); color: #f5d04c; }
+  100% { transform: scale(1); color: #fff; }
+}
+
+.bg-gradient-primary {
+  background-image: linear-gradient(to right, #332940, #4d2f59); 
+}
+
+
+@keyframes zoom-in {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+.animate-zoom-in {
+  animation: zoom-in 0.4s;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

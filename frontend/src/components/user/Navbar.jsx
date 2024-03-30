@@ -16,11 +16,16 @@ export default function Navbar() {
   };
 
   return (
-    <div className="bg-secondary shadow-sm shadow-gray-500" style={{ backgroundColor: 'rgba(61, 32, 142, 0.91)' }}>
+    <div className="bg-secondary shadow-sm shadow-gray-500" style={{ backgroundColor: 'rgba(70, 3, 99)' }}>
       <Container className="p-1">
         <div className="flex justify-between items-center">
           <Link to="/">
             <img src="./logo.png" alt="" className="sm:h-20 h-13 logo transform transition-all duration-200 hover:scale-110" />
+          </Link>
+
+          <Link to="/" className="text-white font-extrabold text-2xl tracking-wide uppercase hover:text-gray-300">
+            <span className="animate-movie">Movie</span>
+            <span className="text-yellow-500 animate-box">Box</span>
           </Link>
 
           <ul className="flex items-center sm:space-x-4 space-x-2">
