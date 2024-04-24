@@ -13,7 +13,7 @@ export default function Header({ onAddActorClick, onAddMovieClick }) {
 
   const options = [
     { title: "Add Movie", onClick: onAddMovieClick },
-    { title: "Add Actor", onClick: onAddActorClick },
+    { title: "Add Actor/Director", onClick: onAddActorClick },
   ];
 
   const handleSearchSubmit = (query) => {

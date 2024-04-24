@@ -10,6 +10,7 @@ const cloudinary = require("../cloud");
 const Movie = require("../models/movie");
 const Review = require("../models/review");
 const { isValidObjectId } = require("mongoose");
+const genres = require("../utils/genres");
 
 exports.uploadTrailer = async (req, res) => {
   const { file } = req;
@@ -322,6 +323,66 @@ exports.getMovies = async (req, res) => {
 
   res.json({ movies: results });
 };
+
+exports.getAllMovies = async (req, res) => {
+  try {
+    const { sortBy, sortOrder, filterBy } = req.query;
+    const validSortFields = ['title', 'releaseDate', 'rating'];
+    const validFilterFields = ['genres'];
+
+    let query = Movie.find({});
+
+    // Apply filtering
+    if (filterBy) {
+      const filterFields = Object.keys(filterBy);
+      const validFilters = filterFields.filter(field => validFilterFields.includes(field));
+
+      if (validFilters.length > 0) {
+        const filterQueries = validFilters.map(field => {
+          const filterValues = Array.isArray(filterBy[field])
+            ? filterBy[field]
+            : filterBy[field].split(',');
+          return { [field]: { $all: filterValues } };
+        });
+
+        query = query.find({ $and: filterQueries });
+      }
+    }
+
+    // Apply sorting
+    if (sortBy) {
+      if (!validSortFields.includes(sortBy)) {
+        return res.status(400).json({ error: 'Invalid sortBy field' });
+      }
+
+      const sortDirection = sortOrder === 'desc' ? -1 : 1;
+      query = query.sort({ [sortBy]: sortDirection });
+    }
+
+    const movies = await query.exec();
+
+    const results = await Promise.all(movies.map(async (movie) => {
+      const reviews = await getAverageRatings(movie._id);
+
+      return {
+        id: movie._id,
+        title: movie.title,
+        poster: movie.poster?.url,
+        responsivePosters: movie.poster?.responsive,
+        genres: movie.genres,
+        status: movie.status,
+        reviews: reviews || { ratingAvg: 0, reviewCount: 0 },
+      };
+    }));
+
+    res.json({ movies: results });
+  } catch (error) {
+    console.error("Error fetching all movies:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 
 exports.getMovieForUpdate = async (req, res) => {
   const { movieId } = req.params;

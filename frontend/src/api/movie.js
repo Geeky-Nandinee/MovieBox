@@ -110,6 +110,61 @@ export const searchMovieForAdmin = async (title) => {
   }
 };
 
+export const getAllMovies = async (sortBy, filterBy) => {
+  try {
+    let endpoint = "/movie/all";
+
+    if (sortBy || filterBy) {
+      const queryParams = new URLSearchParams();
+
+      if (sortBy) {
+        queryParams.append("sortBy", sortBy);
+      }
+
+      if (filterBy) {
+        Object.keys(filterBy).forEach((key) =>
+          queryParams.append(key, filterBy[key])
+        );
+      }
+
+      endpoint += `?${queryParams.toString()}`;
+    }
+
+    const { data } = await client(endpoint);
+    return data.movies;
+  } catch (error) {
+    return catchError(error);
+  }
+};
+
+// export const getAllMovies = async (sortBy, filterBy) => {
+//   try {
+//     let endpoint = "/movie/all";
+
+//     if (sortBy || filterBy) {
+//       const queryParams = new URLSearchParams();
+
+//       if (sortBy) {
+//         queryParams.append("sortBy", sortBy);
+//       }
+
+//       if (filterBy) {
+//         Object.keys(filterBy).forEach((key) =>
+//           queryParams.append(key, filterBy[key])
+//         );
+//       }
+
+//       endpoint += `?${queryParams.toString()}`;
+//     }
+
+//     const { data } = await client(endpoint);
+//     return data.movies;
+//   } catch (error) {
+//     return catchError(error);
+//   }
+// };
+
+
 export const getTopRatedMovies = async (type, signal) => {
   try {
     let endpoint = "/movie/top-rated";
