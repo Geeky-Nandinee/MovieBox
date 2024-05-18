@@ -236,3 +236,27 @@ exports.signIn = async (req, res) => {
     user: { id: _id, name, email, role, token: jwtToken, isVerified },
   });
 };
+
+exports.getUserDetails = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Assuming userId is passed as a route parameter
+
+    if (!isValidObjectId(userId))
+      return sendError(res, "Invalid user ID!");
+
+    const user = await User.findById(userId);
+
+    if (!user)
+      return sendError(res, "User not found!", 404);
+
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      isVerified: user.isVerified,
+      role: user.role
+    });
+  } catch (error) {
+    return sendError(res, "An error occurred while fetching user details!");
+  }
+};

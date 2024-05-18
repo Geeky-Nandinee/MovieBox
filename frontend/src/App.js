@@ -14,6 +14,7 @@ import SingleMovie from "./components/user/SingleMovie";
 import MovieReviews from "./components/user/MovieReviews";
 import SearchMovies from "./components/user/SearchMovies";
 import AllMovies from './components/user/AllMovies';
+import UserProfile from './components/user/UserProfile';
 
 export default function App() {
   const { authInfo } = useAuth();
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/movie/reviews/:movieId" element={<MovieReviews />} />
         <Route path="/movie/search" element={<SearchMovies />} />
         <Route path="/all-movies" element={<AllMovies />} />
+        <Route path="/profile" element={<UserProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

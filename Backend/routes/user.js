@@ -7,6 +7,7 @@ const {
   sendResetPasswordTokenStatus,
   resetPassword,
   signIn,
+  getUserDetails
 } = require("../controllers/user");
 const { isAuth } = require("../middlewares/auth");
 const { isValidPassResetToken } = require("../middlewares/user");
@@ -48,5 +49,7 @@ router.get("/is-auth", isAuth, (req, res) => {
     },
   });
 });
+
+router.get("/:userId", isAuth, getUserDetails);
 
 module.exports = router;

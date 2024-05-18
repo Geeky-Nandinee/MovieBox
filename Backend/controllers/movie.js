@@ -328,25 +328,13 @@ exports.getAllMovies = async (req, res) => {
   try {
     const { sortBy, sortOrder, filterBy } = req.query;
     const validSortFields = ['title', 'releaseDate', 'rating'];
-    const validFilterFields = ['genres'];
 
     let query = Movie.find({});
 
     // Apply filtering
-    if (filterBy) {
-      const filterFields = Object.keys(filterBy);
-      const validFilters = filterFields.filter(field => validFilterFields.includes(field));
-
-      if (validFilters.length > 0) {
-        const filterQueries = validFilters.map(field => {
-          const filterValues = Array.isArray(filterBy[field])
-            ? filterBy[field]
-            : filterBy[field].split(',');
-          return { [field]: { $all: filterValues } };
-        });
-
-        query = query.find({ $and: filterQueries });
-      }
+    if (filterBy && filterBy.genres && filterBy.genres.length > 0) {
+      // Modify the query to include movies with at least one selected genre
+      query = query.find({ genres: { $in: filterBy.genres } });
     }
 
     // Apply sorting
@@ -361,28 +349,28 @@ exports.getAllMovies = async (req, res) => {
 
     const movies = await query.exec();
 
-    const results = await Promise.all(movies.map(async (movie) => {
-      const reviews = await getAverageRatings(movie._id);
+    const results = await Promise.all(
+      movies.map(async (movie) => {
+        const reviews = await getAverageRatings(movie._id);
 
-      return {
-        id: movie._id,
-        title: movie.title,
-        poster: movie.poster?.url,
-        responsivePosters: movie.poster?.responsive,
-        genres: movie.genres,
-        status: movie.status,
-        reviews: reviews || { ratingAvg: 0, reviewCount: 0 },
-      };
-    }));
+        return {
+          id: movie._id,
+          title: movie.title,
+          poster: movie.poster?.url,
+          responsivePosters: movie.poster?.responsive,
+          genres: movie.genres,
+          status: movie.status,
+          reviews: reviews || { ratingAvg: 0, reviewCount: 0 },
+        };
+      })
+    );
 
     res.json({ movies: results });
   } catch (error) {
-    console.error("Error fetching all movies:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error fetching all movies:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-
 
 exports.getMovieForUpdate = async (req, res) => {
   const { movieId } = req.params;

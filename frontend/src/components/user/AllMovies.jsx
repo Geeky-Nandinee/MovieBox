@@ -8,21 +8,31 @@ const AllMovies = ({ isDarkMode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sortBy, setSortBy] = useState('');
-  const [filterBy, setFilterBy] = useState('');
+  const [selectedGenres, setSelectedGenres] = useState([]);
 
   const handleFilterChange = (e) => {
     const genre = e.target.value;
     if (genre) {
-      setFilterBy({ genres: genre });
+      setSelectedGenres((prevGenres) => {
+        if (prevGenres.includes(genre)) {
+          // Remove the genre if it's already selected
+          return prevGenres.filter((g) => g !== genre);
+        } else {
+          // Add the genre if it's not already selected
+          return [...prevGenres, genre];
+        }
+      });
     } else {
-      setFilterBy('');
+      // If no genre is selected, reset the selected genres to an empty array
+      setSelectedGenres([]);
     }
   };
+  
 
   useEffect(() => {
     const fetchMoviesData = async () => {
       try {
-        const moviesData = await getAllMovies(sortBy, filterBy);
+        const moviesData = await getAllMovies(sortBy);
         setMovies(moviesData);
         setLoading(false);
       } catch (error) {
@@ -32,16 +42,19 @@ const AllMovies = ({ isDarkMode }) => {
     };
 
     fetchMoviesData();
-  }, [sortBy, filterBy]);
+  }, [sortBy]);
+
+  const filteredMovies = movies.filter((movie) => {
+    if (selectedGenres.length === 0) {
+      return true; // Show all movies if no genres are selected
+    } else {
+      return selectedGenres.some((genre) => movie.genres.includes(genre));
+    }
+  });
 
   const handleSortChange = (e) => {
     const sortField = e.target.value;
-    const fieldMapping = {
-      'title': 'title',
-      'releaseDate': 'releaseDate',
-      'rating': 'rating'
-    };
-    setSortBy(fieldMapping[sortField] || '');
+    setSortBy(sortField);
   };
 
   const gradientBgClass = isDarkMode ? 'gradient-bg-dark' : 'gradient-bg-light';
@@ -59,8 +72,9 @@ const AllMovies = ({ isDarkMode }) => {
             <option value="rating">Rating</option>
           </select>
 
-          <select id="filter" value={filterBy} onChange={handleFilterChange} className="border rounded-md py-2 px-4 bg-purple-800 shadow-md text-white">
-            <option value="">-- Filter By Genre --</option>
+          <label htmlFor="filter" className="ml-4 mr-2 font-semibold text-yellow-500">Filter By Genre:</label>
+          <select id="filter" value={selectedGenres} onChange={handleFilterChange} multiple className="border rounded-md py-2 px-4 bg-purple-800 shadow-md text-white">
+            <option value="">-- All Genres --</option>
             <option value="Action">Action</option>
             <option value="Adventure">Adventure</option>
             <option value="Animation">Animation</option>
@@ -90,13 +104,12 @@ const AllMovies = ({ isDarkMode }) => {
             <option value="War">War</option>
             <option value="Western">Western</option>
           </select>
-
         </div>
         {error && <div className="text-red-600 text-center mb-8">{error}</div>}
         {loading ? (
           <div className="flex justify-center items-center h-64">Loading...</div>
-        ) : movies.length > 0 ? (
-          <MovieGrid movies={movies} isDarkMode={isDarkMode} />
+        ) : filteredMovies.length > 0 ? (
+          <MovieGrid movies={filteredMovies} isDarkMode={isDarkMode} />
         ) : (
           <div className="text-center text-gray-700">No movies found</div>
         )}
