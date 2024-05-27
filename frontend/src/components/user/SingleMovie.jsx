@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import { getSingleMovie } from "../../api/movie";
 import { useAuth, useNotification } from "../../hooks";
 import { convertReviewCount } from "../../utils/helper";
@@ -12,6 +12,48 @@ import RelatedMovies from "../RelatedMovies";
 
 const convertDate = (date = "") => {
   return date.split("T")[0];
+};
+
+const addMovieToFavoriteList = async (userId, movieId) => {
+  try {
+    const response = await fetch(`/api/users/${userId}/favoritemovies`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ movieId }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+const addMovieToWatchlist = async (userId, movieId) => {
+  try {
+    const response = await fetch(`/api/users/${userId}/watchlist`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ movieId }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
 };
 
 export default function SingleMovie() {
@@ -28,13 +70,13 @@ export default function SingleMovie() {
 
   const navigate = useNavigate();
 
-  const fetchMovie = async () => {
+  const fetchMovie = useCallback(async () => {
     const { error, movie } = await getSingleMovie(movieId);
     if (error) return updateNotification("error", error);
-
+  
     setReady(true);
     setMovie(movie);
-  };
+  }, [movieId, updateNotification]);
 
   const handleOnRateMovie = () => {
     if (!isLoggedIn) return navigate("/auth/signin");
@@ -58,9 +100,55 @@ export default function SingleMovie() {
     setMovie({ ...movie, reviews: { ...reviews } });
   };
 
+  const handleAddToFavoriteList = async () => {
+    if (!isLoggedIn) return navigate("/auth/signin");
+  
+    try {
+      const userId = authInfo.user ? authInfo.user.id : null; // Added null check
+  
+      if (!userId) {
+        updateNotification("error", "User ID not found");
+        return;
+      }
+  
+      const response = await addMovieToFavoriteList(userId, movieId);
+  
+      if (response.success) {
+        updateNotification("success", "Movie added to your favorite list");
+      } else {
+        updateNotification("error", response.error);
+      }
+    } catch (error) {
+      updateNotification("error", error.message);
+    }
+  };
+  
+  const handleAddToWatchlist = async () => {
+    if (!isLoggedIn) return navigate("/auth/signin");
+  
+    try {
+      const userId = authInfo.user ? authInfo.user.id : null; // Added null check
+  
+      if (!userId) {
+        updateNotification("error", "User ID not found");
+        return;
+      }
+  
+      const response = await addMovieToWatchlist(userId, movieId);
+  
+      if (response.success) {
+        updateNotification("success", "Movie added to your watchlist");
+      } else {
+        updateNotification("error", response.error);
+      }
+    } catch (error) {
+      updateNotification("error", error.message);
+    }
+  };
+
   useEffect(() => {
     if (movieId) fetchMovie();
-  }, [movieId]);
+  }, [movieId, fetchMovie]);
 
   if (!ready)
     return (
@@ -98,12 +186,20 @@ export default function SingleMovie() {
           <div className="flex flex-col items-end">
             <RatingStar rating={reviews.ratingAvg} />
             <CustomButtonLink
-              label={convertReviewCount(reviews.reviewCount) + " Reviews"}
-              onClick={() => navigate("/movie/reviews/" + id)}
+              label={convertReviewCount(reviews.reviewCount) + ' Reviews'}
+              onClick={() => navigate('/movie/reviews/' + id)}
             />
             <CustomButtonLink
               label="Rate the movie"
               onClick={handleOnRateMovie}
+            />
+            <CustomButtonLink
+              label="Add to Favorite List"
+              onClick={handleAddToFavoriteList}
+            />
+            <CustomButtonLink
+              label="Add to Watchlist"
+              onClick={handleAddToWatchlist}
             />
           </div>
         </div>
@@ -150,7 +246,7 @@ export default function SingleMovie() {
             />
           </ListWithLabel>
 
-          <ListWithLabel label="Cast:">
+          <ListWithLabel label="Genre:">
             {genres.map((g) => (
               <CustomButtonLink label={g} key={g} clickable={false} />
             ))}

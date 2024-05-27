@@ -6,9 +6,12 @@ import TopRatedMovies from "./user/TopRatedMovies";
 import TopRatedTVSeries from "./user/TopRatedTVSeries";
 import TopRatedWebSeries from "./user/TopRatedWebSeries";
 
-export default function Home() {
+
+export default function Home({ isDarkMode }) {
+  const gradientBgClass = isDarkMode ? "gradient-bg-dark" : "gradient-bg-light";
+
   return (
-    <div className="dark:bg-primary bg-white min-h-screen">
+    <div className={`${gradientBgClass} min-h-screen`}>
       <Container className="px-2 xl:p-0">
         <NotVerified />
         {/* slider */}
