@@ -4,7 +4,7 @@
   "description": "MovieBox - Rating, Review and Recommendation",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -32,5 +32,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
+  },
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
   }
 }
