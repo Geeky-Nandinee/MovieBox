@@ -22,7 +22,7 @@ app.use("/api/movie", movieRouter);
 app.use("/api/review", reviewRouter);
 app.use("/api/admin", adminRouter);
 app.use("/*", handleNotFound);
-
+//using this
 app.use(errorHandler);
 
 // app.post("/sign-in",
